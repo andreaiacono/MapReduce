@@ -6,9 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95bb1dae-6e10-49ae-838c-51e0baad3c03" name="Default" comment="added text file for">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/MapReduce_jar.xml" />
+    <list default="true" id="95bb1dae-6e10-49ae-838c-51e0baad3c03" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MapReduce.iws" />
@@ -451,7 +449,11 @@
       <created>1392761033846</created>
       <updated>1392761033846</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="updated gitignore and added artifact for JAR creation">
+      <created>1392761068169</created>
+      <updated>1392761068169</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -497,7 +499,8 @@
     </option>
     <MESSAGE value="initial import" />
     <MESSAGE value="updated wordcount for new chars to escape; added input and output of wordcount" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated wordcount for new chars to escape; added input and output of wordcount" />
+    <MESSAGE value="updated gitignore and added artifact for JAR creation" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated gitignore and added artifact for JAR creation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
