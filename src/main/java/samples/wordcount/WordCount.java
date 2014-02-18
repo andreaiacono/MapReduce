@@ -42,7 +42,7 @@ public class WordCount {
 
         @Override
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            String cleanLine = value.toString().toLowerCase().replaceAll("[_|$#<>\\[\\]\\*/\\\\,;,.\\-:()?!\"']", " ");
+            String cleanLine = value.toString().toLowerCase().replaceAll("[_|$#<>\\^=\\[\\]\\*/\\\\,;,.\\-:()?!\"']", " ");
             StringTokenizer itr = new StringTokenizer(cleanLine);
             while (itr.hasMoreTokens()) {
                 word.set(itr.nextToken().trim());
