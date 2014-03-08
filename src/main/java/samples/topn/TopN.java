@@ -107,7 +107,7 @@ public class TopN {
 
             @Override
             public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return o1.getValue().compareTo(o2.getValue());
+                return o2.getValue().compareTo(o1.getValue());
             }
         });
 
@@ -115,8 +115,12 @@ public class TopN {
         //which is currently sorted on natural ordering
         Map<K, V> sortedMap = new LinkedHashMap<K, V>();
 
+        int counter = 0;
         for (Map.Entry<K, V> entry : entries) {
             sortedMap.put(entry.getKey(), entry.getValue());
+            if (counter ++ == 20) {
+                break;
+            }
         }
 
         return sortedMap;
