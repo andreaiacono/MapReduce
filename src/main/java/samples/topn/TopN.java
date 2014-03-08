@@ -88,10 +88,14 @@ public class TopN {
         protected void cleanup(Context context) throws IOException, InterruptedException {
 
             Map<Text, IntWritable> sortedMap = sortByValues(countMap);
+
+            int counter = 0;
             for (Text key: sortedMap.keySet()) {
+                if (counter ++ == 20) {
+                    break;
+                }
                 context.write(new Text(key), sortedMap.get(key));
             }
-
         }
     }
 
@@ -115,12 +119,8 @@ public class TopN {
         //which is currently sorted on natural ordering
         Map<K, V> sortedMap = new LinkedHashMap<K, V>();
 
-        int counter = 0;
         for (Map.Entry<K, V> entry : entries) {
             sortedMap.put(entry.getKey(), entry.getValue());
-            if (counter ++ == 20) {
-                break;
-            }
         }
 
         return sortedMap;
