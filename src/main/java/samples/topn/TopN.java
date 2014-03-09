@@ -94,7 +94,7 @@ public class TopN {
                 if (counter ++ == 20) {
                     break;
                 }
-                context.write(new Text(key), sortedMap.get(key));
+                context.write(key, sortedMap.get(key));
             }
         }
     }
