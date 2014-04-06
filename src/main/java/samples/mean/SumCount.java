@@ -12,6 +12,14 @@ import java.io.*;
  * Date: 4/6/14
  * Time: 2:39 PM
  */
+
+/**
+ * SumCount is a utility wrapper around two values for computing the mean of a dataset.
+ * The two values are:
+ * - the sum of the values
+ * - the number of values summed
+ * so that dividing the first by the second will give us the mean.
+ */
 public class SumCount implements WritableComparable<SumCount> {
 
     DoubleWritable sum;
@@ -57,17 +65,18 @@ public class SumCount implements WritableComparable<SumCount> {
     }
 
     @Override
-    public int compareTo(SumCount o) {
+    public int compareTo(SumCount sumCount) {
 
         // compares the first of the two values
-        int comparison = sum.compareTo(o.sum);
+        int comparison = sum.compareTo(sumCount.sum);
+
          // if they're not equal, return the value of compareTo between the "sum" value
         if (comparison != 0) {
             return comparison;
         }
 
         // else return the value of compareTo between the "count" value
-        return count.compareTo(o.count);
+        return count.compareTo(sumCount.count);
     }
 
     @Override
