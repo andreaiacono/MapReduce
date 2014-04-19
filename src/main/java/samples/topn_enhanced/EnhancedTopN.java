@@ -29,7 +29,8 @@ public class EnhancedTopN {
             System.err.println("Usage: EnhancedTopN <in> <out>");
             System.exit(2);
         }
-        Job job = new Job(conf, "Top N Enhanced");
+        Job job = Job.getInstance(conf);
+        job.setJobName("Top N Enhanced");
         job.setJarByClass(EnhancedTopN.class);
         job.setMapperClass(TopNMapper.class);
         job.setCombinerClass(TopNReducer.class);
