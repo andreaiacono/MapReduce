@@ -29,7 +29,8 @@ public class TopN {
             System.err.println("Usage: TopN <in> <out>");
             System.exit(2);
         }
-        Job job = new Job(conf, "Top N");
+        Job job = Job.getInstance(conf);
+        job.setJobName("Top N");
         job.setJarByClass(TopN.class);
         job.setMapperClass(TopNMapper.class);
         job.setCombinerClass(TopNReducer.class);
