@@ -1,9 +1,5 @@
 package samples.csv;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileStatus;
@@ -15,6 +11,10 @@ import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Configurable CSV line reader. Variant of NLineInputReader that reads CSV
  * lines, even if the CSV has multiple lines inside a single column. Also
@@ -24,7 +24,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileSplit;
  * @author mvallebr
  *
  */
-public class CVSMultiLineInputFormat extends FileInputFormat<LongWritable, List<Text>> {
+public class CSVMultiLineInputFormat extends FileInputFormat<LongWritable, List<Text>> {
 
     public static final String LINES_PER_MAP = "mapreduce.input.lineinputformat.linespermap";
 

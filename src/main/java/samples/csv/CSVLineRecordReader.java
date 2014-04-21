@@ -1,15 +1,5 @@
 package samples.csv;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.zip.ZipInputStream;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -23,6 +13,10 @@ import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
+import java.io.*;
+import java.util.List;
+import java.util.zip.ZipInputStream;
+
 /**
  * Reads a CSV line. CSV files could be multiline, as they may have line breaks
  * inside a column
@@ -35,7 +29,7 @@ public class CSVLineRecordReader extends RecordReader<LongWritable, List<Text>> 
     public static final String FORMAT_SEPARATOR = "mapreduce.csvinput.separator";
     public static final String IS_ZIPFILE = "mapreduce.csvinput.zipfile";
     public static final String DEFAULT_DELIMITER = "\"";
-    public static final String DEFAULT_SEPARATOR = ",";
+    public static final String DEFAULT_SEPARATOR = "\t";
     public static final boolean DEFAULT_ZIP = true;
 
     private CompressionCodecFactory compressionCodecs = null;

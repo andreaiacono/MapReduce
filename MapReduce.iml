@@ -11,6 +11,8 @@
     <orderEntry type="library" name="hadoop-common-2.2.0" level="project" />
     <orderEntry type="library" name="hadoop-mapreduce-client-common-2.2.0" level="project" />
     <orderEntry type="library" name="hadoop-mapreduce-client-core-2.2.0" level="project" />
+    <orderEntry type="library" name="jackson-core-2.2.3" level="project" />
+    <orderEntry type="library" name="javacsv" level="project" />
   </component>
 </module>
 
