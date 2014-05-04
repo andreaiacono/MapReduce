@@ -1,6 +1,9 @@
 package samples.kmeans;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -9,6 +12,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import java.io.*;
 import java.util.List;
 
 /**
@@ -72,6 +76,9 @@ public class KMeans {
             centroidsFile = newCentroids;
 
         } while (!hasConverged);
+
+        // now that we have computed the centroids
+        writeFinalData(configuration, Utils.getCentroids(centroidsFile));
     }
 
 
@@ -100,6 +107,48 @@ public class KMeans {
         FileOutputFormat.setOutputPath(job, new Path(configuration.get(Constants.OUTPUT_FILE_ARG)));
 
         return job.waitForCompletion(true);
+    }
+
+    public static void writeFinalData(Configuration configuration, List<Double[]> centroids) throws IOException {
+
+        FileSystem fs = FileSystem.get(configuration);
+
+        FSDataOutputStream dataOutputStream = fs.create(new Path(configuration.get(Constants.OUTPUT_FILE_ARG) + "/final-data"));
+        FSDataInputStream dataInputStream = new FSDataInputStream(fs.open(new Path(configuration.get(Constants.INPUT_FILE_ARG) + "/points.dat")));
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(dataInputStream));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(dataOutputStream));
+
+        try {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                String[] values = line.split(" ");
+                double x = Double.parseDouble(values[0]);
+                double y = Double.parseDouble(values[1]);
+                int index = 0;
+                double minDistance = Double.MAX_VALUE;
+                for (int j = 0; j < centroids.size(); j++) {
+                    double distance = Utils.euclideanDistance(centroids.get(j)[0], centroids.get(j)[1], x, y);
+                    if (distance < minDistance) {
+                        index = j;
+                        minDistance = distance;
+                    }
+                }
+
+                writer.write(x + "\t" + y + "\t" + index + "\n");
+            }
+        }
+        finally {
+
+            if (reader != null) {
+                reader.close();
+            }
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 
 }
