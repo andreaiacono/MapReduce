@@ -9,6 +9,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: andrea
@@ -27,26 +29,36 @@ public class KMeans {
         }
 
         configuration.set(Constants.INPUT_FILE_ARG, otherArgs[0]);
-        configuration.set(Constants.OUTPUT_FILE_ARG, otherArgs[1]);
 
         int centroidsNumber = Integer.parseInt(otherArgs[2]);
         configuration.setInt(Constants.CENTROID_NUMBER_ARG, centroidsNumber);
 
-        // writes centroids on distributed cache
-        String centroids = Utils.getFormattedCentroids(Utils.createRandomCentroids(centroidsNumber), centroidsNumber);
-        Utils.writeCentroids(configuration, centroids);
+        // creates random centroids
+        List<Double[]> centroids = Utils.createRandomCentroids(centroidsNumber);
+        String centroidsFile = Utils.getFormattedCentroids(centroids);
 
+        // writes centroids on distributed cache
+        Utils.writeCentroids(configuration, centroidsFile);
+//        List<Double[]> c = Utils.readCentroids(Constants.CENTROIDS_FILE);
         boolean hasConverged = false;
+        int iteration = 0;
         do {
 
+            configuration.set(Constants.OUTPUT_FILE_ARG, otherArgs[1] + "-" + iteration);
+
             // executes hadoop job
-            launchJob(configuration);
+            if (!launchJob(configuration, iteration++)) {
+
+                // if an error has occurred stops iteration and terminates
+                System.exit(1);
+            }
 
             // reads reducer output file
-            String newCentroids = Utils.readCentroidsFromHDFS(configuration);
+            String newCentroids = Utils.readReducerOutput(configuration);
+//            if (true) throw new IOException("reducer=[" + newCentroids + "]");
 
             // if the output of the reducer equals the old one
-            if (centroids.equals(newCentroids)) {
+            if (centroidsFile.equals(newCentroids)) {
 
                 // it means that the iteration is finished
                 hasConverged = true;
@@ -57,7 +69,7 @@ public class KMeans {
                 Utils.writeCentroids(configuration, newCentroids);
             }
 
-            centroids = newCentroids;
+            centroidsFile = newCentroids;
 
         } while (!hasConverged);
     }
@@ -68,7 +80,7 @@ public class KMeans {
      *
      * @return true if the job has converged, else false
      */
-    private static boolean launchJob(Configuration configuration) throws Exception {
+    private static boolean launchJob(Configuration configuration, int iteration) throws Exception {
 
         Job job = Job.getInstance(configuration);
         job.setJobName("KMeans");
@@ -80,10 +92,12 @@ public class KMeans {
         job.setMapOutputKeyClass(IntWritable.class);
         job.setMapOutputValueClass(Text.class);
 
-        FileInputFormat.addInputPath(job, new Path(configuration.get(Constants.INPUT_FILE_ARG)));
-        FileOutputFormat.setOutputPath(job, new Path(configuration.get(Constants.OUTPUT_FILE_ARG)));
+        job.setNumReduceTasks(1);
 
         job.addCacheFile(new Path(Constants.CENTROIDS_FILE).toUri());
+
+        FileInputFormat.addInputPath(job, new Path(configuration.get(Constants.INPUT_FILE_ARG)));
+        FileOutputFormat.setOutputPath(job, new Path(configuration.get(Constants.OUTPUT_FILE_ARG)));
 
         return job.waitForCompletion(true);
     }
