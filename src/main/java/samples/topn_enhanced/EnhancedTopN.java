@@ -33,7 +33,6 @@ public class EnhancedTopN {
         job.setJobName("Top N Enhanced");
         job.setJarByClass(EnhancedTopN.class);
         job.setMapperClass(TopNMapper.class);
-        job.setCombinerClass(TopNReducer.class);
         job.setReducerClass(TopNReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
