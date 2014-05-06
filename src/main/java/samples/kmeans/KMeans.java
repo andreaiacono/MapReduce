@@ -32,10 +32,9 @@ public class KMeans {
             System.exit(2);
         }
 
-        configuration.set(Constants.INPUT_FILE_ARG, otherArgs[0]);
-
         int centroidsNumber = Integer.parseInt(otherArgs[2]);
         configuration.setInt(Constants.CENTROID_NUMBER_ARG, centroidsNumber);
+        configuration.set(Constants.INPUT_FILE_ARG, otherArgs[0]);
 
         // creates random centroids
         List<Double[]> centroids = Utils.createRandomCentroids(centroidsNumber);
@@ -43,7 +42,6 @@ public class KMeans {
 
         // writes centroids on distributed cache
         Utils.writeCentroids(configuration, centroidsFile);
-//        List<Double[]> c = Utils.readCentroids(Constants.CENTROIDS_FILE);
         boolean hasConverged = false;
         int iteration = 0;
         do {
@@ -51,7 +49,7 @@ public class KMeans {
             configuration.set(Constants.OUTPUT_FILE_ARG, otherArgs[1] + "-" + iteration);
 
             // executes hadoop job
-            if (!launchJob(configuration, iteration++)) {
+            if (!launchJob(configuration)) {
 
                 // if an error has occurred stops iteration and terminates
                 System.exit(1);
@@ -59,7 +57,6 @@ public class KMeans {
 
             // reads reducer output file
             String newCentroids = Utils.readReducerOutput(configuration);
-//            if (true) throw new IOException("reducer=[" + newCentroids + "]");
 
             // if the output of the reducer equals the old one
             if (centroidsFile.equals(newCentroids)) {
@@ -74,6 +71,7 @@ public class KMeans {
             }
 
             centroidsFile = newCentroids;
+            iteration ++;
 
         } while (!hasConverged);
 
@@ -87,7 +85,7 @@ public class KMeans {
      *
      * @return true if the job has converged, else false
      */
-    private static boolean launchJob(Configuration configuration, int iteration) throws Exception {
+    private static boolean launchJob(Configuration configuration) throws Exception {
 
         Job job = Job.getInstance(configuration);
         job.setJobName("KMeans");

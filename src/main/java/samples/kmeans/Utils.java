@@ -42,6 +42,28 @@ public class Utils {
 
     }
 
+    public static List<Double[]> getCentroids(String content) throws IOException {
+        BufferedReader reader = new BufferedReader(new StringReader(content));
+        String line;
+        List<Double[]> centroids = new ArrayList<>();
+        try {
+            while ((line = reader.readLine()) != null) {
+//                throw new IOException("FILENAME: " + filename +" - LINE=[" + line + "]");
+                String[] values = line.split("\t");
+                String[] temp = values[0].split(" ");
+                Double[] centroid = new Double[2];
+                centroid[0] = Double.parseDouble(temp[0]);
+                centroid[1] = Double.parseDouble(temp[1]);
+                centroids.add(centroid);
+            }
+        }
+        finally {
+            reader.close();
+        }
+
+        return  centroids;
+    }
+
     public static String getFormattedCentroids(List<Double[]> centroids) {
 
         int counter = 0;
