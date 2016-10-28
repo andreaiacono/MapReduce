@@ -20,7 +20,7 @@ public class JsonToCsvConverter {
 
     public static String convert() throws Exception {
         JsonFactory f = new JsonFactory();
-        JsonParser jp = f.createJsonParser(new File("src/main/java/utils/milano_temp.json"));
+        JsonParser jp = f.createJsonParser(new File("src/main/resources/mean/milano_temp.json"));
         StringBuilder builder = new StringBuilder();
         while (jp.nextToken() != JsonToken.END_ARRAY) {
             while (jp.nextToken() != JsonToken.END_OBJECT) {

@@ -7,7 +7,7 @@ import java.io.FileWriter;
 
 /**
  * This simple class uses javacvs library to read a multiline CSV file
- * and to transofrm it into a single line CSV
+ * and to transform it into a single line CSV
  * User: andrea
  * Date: 19/04/14
  * Time: 22.18
@@ -16,7 +16,8 @@ public class CsvTransformer {
 
     public static void main(String[] args) throws Exception {
 
-        CsvReader csvReader = new CsvReader("/home/andrea/forum_node.tsv");
+        // sorry, the forum_node.tsv file is too big to be uploaded to github
+        CsvReader csvReader = new CsvReader("forum_node.tsv");
         csvReader.setDelimiter('\t');
         csvReader.setTextQualifier('"');
 
