@@ -42,8 +42,9 @@ public class EnhancedTopN {
     }
 
     /**
-     * The mapper reads one line at the time, splits it into an array of single words and emits every
-     * word to the reducers with the value of 1.
+     * The mapper reads one line at the time, splits it into an array of single words and puts every 
+     * word in a map; after finishing reading the words, emits the keys of the map with the already
+     * coutned words.
      */
     public static class TopNMapper extends Mapper<Object, Text, Text, IntWritable> {
 
