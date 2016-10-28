@@ -1,4 +1,5 @@
-out/
-src/main/java/META-INF/
 .idea/
 *.iml
+.Rhistory
+out/
+*.tsv
