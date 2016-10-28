@@ -38,7 +38,6 @@ public class CsvTransformer {
         csvWriter.endRecord();
         csvReader.readHeaders();
 
-        int counter = 0;
         while (csvReader.readRecord()) {
             String id = csvReader.get("id");
             String title = csvReader.get("title");

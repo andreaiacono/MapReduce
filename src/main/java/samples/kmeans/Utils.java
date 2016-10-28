@@ -19,14 +19,21 @@ import java.util.List;
 public class Utils {
 
     public static List<Double[]> readCentroids(String filename) throws IOException {
-
         FileInputStream fileInputStream = new FileInputStream(filename);
         BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream));
-        String line;
+        return  readData(reader);
+    }
+
+    public static List<Double[]> getCentroids(String content) throws IOException {
+        BufferedReader reader = new BufferedReader(new StringReader(content));
+        return  readData(reader);
+    }
+
+    private static List<Double[]> readData(BufferedReader reader) throws IOException {
         List<Double[]> centroids = new ArrayList<>();
+        String line;
         try {
             while ((line = reader.readLine()) != null) {
-//                throw new IOException("FILENAME: " + filename +" - LINE=[" + line + "]");
                 String[] values = line.split("\t");
                 String[] temp = values[0].split(" ");
                 Double[] centroid = new Double[2];
@@ -39,29 +46,6 @@ public class Utils {
             reader.close();
         }
         return centroids;
-
-    }
-
-    public static List<Double[]> getCentroids(String content) throws IOException {
-        BufferedReader reader = new BufferedReader(new StringReader(content));
-        String line;
-        List<Double[]> centroids = new ArrayList<>();
-        try {
-            while ((line = reader.readLine()) != null) {
-//                throw new IOException("FILENAME: " + filename +" - LINE=[" + line + "]");
-                String[] values = line.split("\t");
-                String[] temp = values[0].split(" ");
-                Double[] centroid = new Double[2];
-                centroid[0] = Double.parseDouble(temp[0]);
-                centroid[1] = Double.parseDouble(temp[1]);
-                centroids.add(centroid);
-            }
-        }
-        finally {
-            reader.close();
-        }
-
-        return  centroids;
     }
 
     public static String getFormattedCentroids(List<Double[]> centroids) {
