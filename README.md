@@ -1,7 +1,7 @@
 MapReduce
 =========
 
-Sample code of MapReduce talk for JUG Milano, available at http://www.slideshare.net/andreaiacono/mapreduce-34478449
+Sample code of MapReduce talk for JUG Milano, available at https://www.slideshare.net/andreaiacono/mapreduce-by-examples
 
 It contains the code for:
 * a basic [WordCount](https://github.com/andreaiacono/MapReduce/tree/master/src/main/java/samples/wordcount) example 
